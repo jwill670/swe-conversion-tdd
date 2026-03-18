@@ -63,9 +63,11 @@ public class conversion
         return num2;
     }
 
+    // temperature
+
     // Convert Fahrenheit to Celsius
     private static float convertF2C (String FAsStr, int decimalPrecision)
-    {  // Convert farenheit to celsius
+    {  // Convert fahrenheit to celsius
         float num1, num2; // temporary variables
 
         // Round to N digits past decimal
@@ -79,7 +81,7 @@ public class conversion
 
     // Convert Celsius to Fahrenheit
     private static float convertC2F (String CAsStr, int decimalPrecision)
-    {  // Convert celsius to farenheit
+    {  // Convert celsius to fahrenheit
         float num1, num2; // temporary variables
 
         // Round to N digits past decimal
@@ -88,6 +90,35 @@ public class conversion
         // Convert
         num2 = (float) ( (num1 * 9.0 / 5.0) + 32.0);
         // Back to N digits
+        return roundNum(num2, decimalPrecision);
+    }
+
+    // Convert Kelvin to Celsius
+    public static float convertK2C(String kAsStr, int decimalPrecision) {
+        // Convert kelvin to celsius
+        // Formula: C = K - 273.15
+        float num1, num2;
+
+        num1 = (Float.valueOf(kAsStr).floatValue());
+        num1 = roundNum(num1, decimalPrecision);
+
+        // Convert
+        num2 = (float)(num1 - 273.15);
+
+        return roundNum(num2, decimalPrecision);
+    }
+
+    // Convert Celsius to Kelvin
+    public static float convertC2K(String cAsStr, int decimalPrecision) {
+        // Formula: K = C + 273.15
+        float num1, num2;
+
+        num1 = (Float.valueOf(cAsStr).floatValue());
+        num1 = roundNum(num1, decimalPrecision);
+
+        // Convert
+        num2 = (float)(num1 + 273.15);
+
         return roundNum(num2, decimalPrecision);
     }
 
@@ -187,12 +218,19 @@ public class conversion
         return genericConvert(secAsStr, 1f/3600f, decimalPrecision);
     }
 
-    // Speed conversions - Added via TDD
+    // Convert miles per hour to kilometers per hour
     public static float convertMph2Kmh(String mphAsStr, int decimalPrecision) {
-        // Convert miles per hour to kilometers per hour
         // Formula: km/h = mph × 1.60934
         return genericConvert(mphAsStr, 1.60934f, decimalPrecision);
     }
+
+    // Convert kilometers per hour to miles per hour
+    public static float convertKmh2Mph(String kmhAsStr, int decimalPrecision) {
+        // Formula: mph = km/h × 0.621371
+        return genericConvert(kmhAsStr, 0.621371f, decimalPrecision);
+    }
+
+
 
     public static void main(String[] args) {
 
@@ -216,7 +254,7 @@ public class conversion
         while (continueConverting) {
             // Display main menu with categories
             System.out.println("Choose an operation category:");
-            System.out.println("1. Temperatures");
+            System.out.println("1. Temperatures (F, C, K)");
             System.out.println("2. Short Distance");
             System.out.println("3. Medium Distance");
             System.out.println("4. Large Distance");
@@ -224,14 +262,15 @@ public class conversion
             System.out.println("6. Small Weight");
             System.out.println("7. Medium Weight");
             System.out.println("8. Time");
-            System.out.println("9. Exit");
-            System.out.print("Enter choice (1-9): ");
+            System.out.println("9. Speed");
+            System.out.println("10. Exit");
+            System.out.print("Enter choice (1-10): ");
 
             // Get user's category choice
             int choice = scanner.nextInt();
 
             // Check if exit option was selected
-            if (choice == 9)
+            if (choice == 10)
             {
                 continueConverting = false;
                 System.out.println("Goodbye!");
@@ -244,13 +283,14 @@ public class conversion
                 case 1: // Temperature conversions
                     System.out.println("1. Fahrenheit to Celsius");
                     System.out.println("2. Celsius to Fahrenheit");
+                    System.out.println("3. Kelvin to Celsius");
+                    System.out.println("4. Celsius to Kelvin");
                     System.out.print("Enter choice: ");
                     int tempChoice = scanner.nextInt();
 
                     System.out.print("Enter temperature value: ");
                     String tempValue = scanner.next();
 
-                    // Perform selected conversion
                     if (tempChoice == 1)
                     {
                         float result = convertF2C(tempValue, decimalPrecision);
@@ -259,6 +299,17 @@ public class conversion
                     {
                         float result = convertC2F(tempValue, decimalPrecision);
                         System.out.println(tempValue + "C = " + result + "F");
+                    } else if (tempChoice == 3)
+                    {
+                        float result = convertK2C(tempValue, decimalPrecision);
+                        System.out.println(tempValue + " K = " + result + "C");
+                    } else if (tempChoice == 4)
+                    {
+                        float result = convertC2K(tempValue, decimalPrecision);
+                        System.out.println(tempValue + "C = " + result + " K");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 case 2: // Short distance conversions
@@ -278,6 +329,9 @@ public class conversion
                     {
                         float result = convertCm2In(shortDistValue, decimalPrecision);
                         System.out.println(shortDistValue + "cm. = " + result + "in.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 case 3: // Medium distance conversions
@@ -297,6 +351,9 @@ public class conversion
                     {
                         float result = convertM2F(medDistValue, decimalPrecision);
                         System.out.println(medDistValue + "m. = " + result + "ft.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 case 4: // Long distance conversions
@@ -316,6 +373,9 @@ public class conversion
                     {
                         float result = convertK2M(largeDistValue, decimalPrecision);
                         System.out.println(largeDistValue + "km. = " + result + "m.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 case 5: // Volume conversions
@@ -335,6 +395,9 @@ public class conversion
                     {
                         float result = convertL2G(volValue, decimalPrecision);
                         System.out.println(volValue + "L. = " + result + "gal.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 case 6: // Small weight conversions
@@ -354,6 +417,9 @@ public class conversion
                     {
                         float result = convertG2Oz(smallweightValue, decimalPrecision);
                         System.out.println(smallweightValue + "g. = " + result + "oz.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 case 7: // Medium weight conversions
@@ -373,6 +439,9 @@ public class conversion
                     {
                         float result = convertK2Lb(medweightValue, decimalPrecision);
                         System.out.println(medweightValue + "kg. = " + result + "lbs.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
                     }
                     break;  // Invalid inputs
                 case 8:
@@ -391,6 +460,28 @@ public class conversion
                     } else if (timeChoice == 2) {
                         float result = convertSec2Hr(timeValue, decimalPrecision);
                         System.out.println(timeValue + "sec. = " + result + "hr.");
+                    } else
+                    {
+                        System.out.println("Invalid choice!");
+                    }
+                    break;
+                case 9: // Speed conversions
+                    System.out.println("1. Miles per Hour to Kilometers per Hour");
+                    System.out.println("2. Kilometers per Hour to Miles per Hour");
+                    System.out.print("Enter choice: ");
+                    int speedChoice = scanner.nextInt();
+
+                    System.out.print("Enter speed value: ");
+                    String speedValue = scanner.next();
+
+                    if (speedChoice == 1) {
+                        float result = convertMph2Kmh(speedValue, decimalPrecision);
+                        System.out.println(speedValue + " mph = " + result + " km/h");
+                    } else if (speedChoice == 2) {
+                        float result = convertKmh2Mph(speedValue, decimalPrecision);
+                        System.out.println(speedValue + " km/h = " + result + " mph");
+                    } else {
+                        System.out.println("Invalid choice!");
                     }
                     break;
                 default:
